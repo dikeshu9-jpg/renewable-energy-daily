@@ -1,12 +1,22 @@
-const today = new Date();
+async function loadNews() {
+    const response = await fetch("news.json");
+    const news = await response.json();
 
-const text =
-today.getFullYear() + "年" +
-(today.getMonth()+1) + "月" +
-today.getDate() + "日";
+    const newsContainer = document.getElementById("news-list");
 
-const el = document.getElementById("today");
+    if (!newsContainer) return;
 
-if(el){
-    el.textContent = text;
+    newsContainer.innerHTML = "";
+
+    news.forEach(item => {
+        newsContainer.innerHTML += `
+        <div class="news">
+            <h3>${item.title}</h3>
+            <strong>${item.category}</strong>
+            <p>${item.summary}</p>
+        </div>
+        `;
+    });
 }
+
+loadNews();
